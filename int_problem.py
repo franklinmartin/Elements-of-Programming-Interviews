@@ -1,3 +1,4 @@
+import unittest
 import csv
 from decimal import Decimal
 file = 'AAPL.csv'
@@ -47,5 +48,12 @@ def max_profit_original(start):
                     profit = start[j] - start[i]
     return profit
 
-print(max_profit(start))
-print(max_profit_original(start))
+#print(max_profit(start))
+#print(max_profit_original(start))
+
+class TestMaxProfit(unittest.TestCase):
+    def test_original(self):
+        self.assertEqual(max_profit(start), max_profit_original(start))
+
+if __name__ == '__main__':
+    unittest.main()
