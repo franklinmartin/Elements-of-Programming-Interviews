@@ -2,7 +2,7 @@ import math
 from collections import namedtuple
 
 from matplotlib import pyplot as plt
-
+from matplotlib.patches import Rectangle as rect
 #fig = plt.figure(frameon=False)
 #fig.set_size_inches(10, 10)
 #ax = plt.Axes(fig, [0., 0., 1., 1.])
@@ -11,6 +11,8 @@ from matplotlib import pyplot as plt
 
 rectangle = namedtuple("Rectangle", "x y width height")
 
+def convert(R):
+    return rect((R.x, R.y), R.width, R.height)
 
 #normalized coordinates
 #x1 < width
@@ -75,13 +77,10 @@ def rotate_rectangle(R1, A=0):
 
 
 # x1 < x2   y1 < y2
-r1 = rectangle(1, 2, 4, 2)
-r2 = rectangle(1, 1, 1, 1)
+r1 = rectangle(0, 0, 4, 2)
+r2 = rectangle(10, 10, 10, 10)
 print(intersect_rectangle(r1, r2))
 #a = math.radians(45)
-
-
-
 """ 
 x = []
 y = []
@@ -107,3 +106,41 @@ for j in range(0, 4):
 
 plt.show()
  """
+
+fig, ax = plt.subplots()
+R1 = convert(r1)
+R1.set_color('pink')
+R1.set_alpha(0.5)
+
+R2 = convert(r2)
+R2.set_alpha(1.0)
+
+
+ax.add_patch(R1)
+ax.add_patch(R2)
+
+
+
+def mix_colors(first_color, second_color):
+    mixed_color = []
+    for i in range(len(first_color)):
+        mixed_color.append((first_color[i] + second_color[i]) / 2)
+    print(mixed_color)
+    return mixed_color
+
+ir = intersect_rectangle(r1, r2)
+IR = convert(ir)
+IR.set_color(mix_colors(R1.get_facecolor(), R2.get_facecolor()))
+
+
+R1.set_edgecolor('black')
+R2.set_edgecolor('black')
+IR.set_edgecolor('black')
+ax.add_patch(IR)
+
+
+
+plt.xlim(0, 20)
+plt.ylim(0, 20)
+ax.plot()
+plt.show()
